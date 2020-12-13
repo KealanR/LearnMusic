@@ -5,6 +5,19 @@
 {% endblock head %}
 
 {% block body %}
+<!--the below allows flah messages to appear on screen, catagories are true to style with bootstrap-->
+{% with messages = get_flashed_messages(with_categories=true) %}
+<!--If there are messages sent from flash-->
+  {% if messages %}
+    {% for category, message in messages%}
+      <!--category is passed into class - success/fail etc-->
+      <div class="alert alert-{{ category }}">
+        <!--print the message-->
+        {{message}}
+      </div>
+    {% endfor %} 
+  {% endif %}
+{% endwith %}
 <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-2"></div>
@@ -12,6 +25,7 @@
                 <h1>Sign up</h1>
                 <form method="POST" action="">
                   
+                  <!--for the secret key-->
                   {{ form.hidden_tag() }}
                   <fieldset class="form-group">
                     <legend class="mb-5 border-bottom">Sign up here</legend>
@@ -28,43 +42,21 @@
                       {{ form.passwordForm(class="form-control") }}
                     </div>
                     <div class="form-group">
-                      {{ form.passwordForm.label(class="form-control-label") }}
-                      {{ form.passwordForm(class="form-control") }}
-                    </div>
-                    <div class="form-group">
                       {{ form.passwordCheckForm.label(class="form-control-label") }}
                       {{ form.passwordCheckForm(class="form-control") }}
                     </div>
                   </fieldset>
                    
                   <div class="form-group">
-                    {{ form.signupForm(class=" }}
+                    {{ form.signupForm(class="btn btn-primary") }}
                   </div>
+                  <br>
+                  <a  type="button" class="btn btn-link" href="{{ url_for('login')}}">Already have an account?</button>
                   
-                  <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail">
-                    
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputUsername" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="inputUsername">
-                    
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword">
-                  </div>
                   
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                <br>
-                <a id="toSLogInBtn" type="button" class="btn btn-link" href="login">Already have an account?</button>
             </div>
             <div class="col-2"></div>
         </div>
     </div>
-
-    
 
 {% endblock body%}
