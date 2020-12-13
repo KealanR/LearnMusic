@@ -1,7 +1,11 @@
-import boto3, user
+import boto3
 from boto3.dynamodb.conditions import Key, Attr
+import keys
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb',
+                    aws_access_key_id = keys.aws_access_key_id,
+                    aws_secret_access_key = keys.aws_secret_access_key,
+                    aws_session_token = keys.aws_session_token)
 
 userTable = dynamodb.Table('users')
 questionTable = dynamodb.Table('questions')

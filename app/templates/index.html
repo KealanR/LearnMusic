@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{%block head %}
+{% block head %}
 
-{% endblock %}
+{% endblock head %}
 
 {% block body %}
 <div class="container-fluid mt-5">
@@ -15,21 +15,21 @@
       </div>
       <div class="col-2"></div>
     </div>
-  
+  {% for question in questions %}
     <div class="row">
       <div class="col-2"></div>
       <div class="col-8">
-        {% for question in questions %}
+        
           <h3>question.title</h3>
           <p>question.explanation</p>
           <h6 class="m-1">question.user</h6>
           <p class="font-weight-lighter text-info">question.tags</p>
-        {% endfor %}
+        
       </div>
       <div class="col-2"></div>
     </div>
+  
+  {% endfor %}
   </div>
 
-    
-
-{% endblock %}
+{% endblock body%}

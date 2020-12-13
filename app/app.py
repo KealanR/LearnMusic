@@ -1,15 +1,21 @@
 from flask import Flask, render_template, url_for, request
 import dynamodb_connection as db
+import keys
+
 
 app = Flask(__name__)
 
 #can assign multiple routes to same function
 @app.route('/')
 @app.route('/login')
-def index():
+def login():
     
     #no need to specify template folder - it knows to look in templates
     return render_template('login.html')
+    
+@app.route('/signup')
+def signup():
+    return render_template('signup.html' )
     
 @app.route('/home')
 def home():
