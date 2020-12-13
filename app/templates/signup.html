@@ -10,7 +10,37 @@
             <div class="col-2"></div>
             <div class="col-8">
                 <h1>Sign up</h1>
-                <form>
+                <form method="POST" action="">
+                  
+                  {{ form.hidden_tag() }}
+                  <fieldset class="form-group">
+                    <legend class="mb-5 border-bottom">Sign up here</legend>
+                    <div class="form-group">
+                      {{ form.emailForm.label(class="form-control-label") }}
+                      {{ form.emailForm(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.usernameForm.label(class="form-control-label") }}
+                      {{ form.usernameForm(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.passwordForm.label(class="form-control-label") }}
+                      {{ form.passwordForm(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.passwordForm.label(class="form-control-label") }}
+                      {{ form.passwordForm(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.passwordCheckForm.label(class="form-control-label") }}
+                      {{ form.passwordCheckForm(class="form-control") }}
+                    </div>
+                  </fieldset>
+                   
+                  <div class="form-group">
+                    {{ form.signupForm(class=" }}
+                  </div>
+                  
                   <div class="mb-3">
                     <label for="inputEmail" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="inputEmail">

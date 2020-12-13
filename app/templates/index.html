@@ -2,29 +2,42 @@
 
 {% block head %}
 
-{% endblock head %}
+{% endblock %}
 
 {% block body %}
-<div class="container-fluid mt-5">
+<div class="container mt-5">
   
   <div class="row">
       <div class="col-2"></div>
       <div class="col-8">
         <h3>Want to ask something?</h3>
-        <button type="button" class="btn btn-link">Post a question here</button>
+        <a type="button" class="btn btn-link" href="questionform">Post a question here</a>
       </div>
       <div class="col-2"></div>
     </div>
+    
+  <div class="container mt-5">
+  
+  <div class="row">
+    <div class="col-2"></div>
+      <div class="col-8">
+        <h2>Question Feed</h2>
+      </div>
+    <div class="col-2"></div>
+  </div>
   {% for question in questions %}
+  <br>
     <div class="row">
       <div class="col-2"></div>
-      <div class="col-8">
-        
-          <h3>question.title</h3>
-          <p>question.explanation</p>
-          <h6 class="m-1">question.user</h6>
-          <p class="font-weight-lighter text-info">question.tags</p>
-        
+      <div class="col-8 ">
+        <div class="border">
+          <h3>{{question.title}}</h3>
+          <p>{{question.explanation}}</p>
+          
+          <p class="font-weight-lighter text-info">{{question.tags}}</p>
+          <p><a class="m-1">{{question.username}}</a> {{question.timestamp}}</p>
+          
+        </div>
       </div>
       <div class="col-2"></div>
     </div>
@@ -32,4 +45,4 @@
   {% endfor %}
   </div>
 
-{% endblock body%}
+{% endblock %}
