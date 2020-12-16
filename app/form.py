@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, FileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 class SignUpForm(FlaskForm):
@@ -23,14 +23,20 @@ class SignUpForm(FlaskForm):
     
     
 class LoginForm(FlaskForm):
-    email = StringField('Email', 
+    emailli = StringField('Email', 
                         validators=[DataRequired(), 
                         Email()])
                         
-    password = PasswordField('Password', 
+    passwordli = PasswordField('Password', 
                             validators=[DataRequired()])
                             
-    remember = BooleanField('Stay logged in')
     
-    submit = SubmitField('Login')
     
+    login = SubmitField('Login')
+    
+class QuestionForm(FlaskForm):
+    
+    title = StringField('Title', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
+    media = FileField('Want to attach a file?')
+    uploadQuestion = SubmitField('Upload Question')

@@ -1,35 +1,31 @@
 {% extends 'base.html' %}
 
-{%block head %}
 
-{% endblock head %}
+{% block content %}
 
-{% block body %}
-<div class="container-fluid mt-5">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <h1>Log in</h1>
-                <form>
-                  <div class="mb-3">
-                    <label for="inputEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
-                    
-                  </div>
-                  <div class="mb-3">
-                    <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword">
-                  </div>
-                  
-                  <button id="loginBtn" type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                <br>
-                <a id="toSignUpBtn" type="button" class="btn btn-link" href="signup">Not a member? Sign up here</button>
-            </div>
-            <div class="col-2"></div>
-        </div>
-    </div>
 
-    
+<div class="container">
+  <h3 class="mb-3">Log in</h3>
+    <form method="post" action="">
+        
+        {{ form.hidden_tag() }}
+        
+        {{ form.emailli.label(class="form-control-label") }}
+        {{ form.emailli(class='form-control') }}
+        {% for error in form.emailli.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.passwordli.label(class="form-control-label") }}
+        {{ form.passwordli(class='form-control') }}
+        {% for error in form.passwordli.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.login(class='btn btn-success') }}
+    </form>
+    <br>
+    <a  type="button" class="btn btn-link" href="{{ url_for('signup')}}">Want to make an account?</a>
+</div>
 
-{% endblock body%}
+{% endblock %}

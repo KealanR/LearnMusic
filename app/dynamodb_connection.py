@@ -13,7 +13,7 @@ dynamodb = boto3.resource('dynamodb')
 userTable = dynamodb.Table('user_information')
 questionTable = dynamodb.Table('questions')
 
-def checkIfExists(email):
+def checkIfExistsSignUp(email):
     response = userTable.query(KeyConditionExpression=Key('email').eq(email))
     if (response['Count'] == 0):
         #print("empty")
@@ -21,14 +21,20 @@ def checkIfExists(email):
     else:
         #print(response)
         return False
-    
+        
+def checkIfExistsLogin(email, password):
+    response = userTable.query(KeyConditionExpression=Key('email').eq(email), FilterExpression=Attr('password').eq(password))
+    if (response['Count'] == 1):
+        print(response)
+        return True
+    else:
+        #print(response)
+        return False
+
+
     
 def signupDB(email, username, password):
-    # userInfo = {
-    #     'email': email, 
-    #     'userame': username, 
-    #     'password': password
-    # }
+    
     userTable.put_item(
         Item={
             'email': email,
@@ -36,6 +42,7 @@ def signupDB(email, username, password):
             'password': password
         })
 
+    
 #scans db for list of questions and returns list
 def questionList():
     response = questionTable.scan()
