@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, flash
-from form import SignUpForm, LoginForm
+from form import SignUpForm, LoginForm, QuestionForm
 import dynamodb_connection as db
 
 #import keys
@@ -63,9 +63,14 @@ def home():
 def question():
     return render_template('question.html')
     
-@application.route('/questionform')
+@application.route('/questionform', methods=["GET", "POST"])
 def questionForm():
-    return render_template('question_form.html')
+    form = QuestionForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            print("YEAO")
+            
+    return render_template('question_form.html', form=form)
     
 
     

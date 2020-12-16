@@ -36,7 +36,7 @@ class LoginForm(FlaskForm):
     
 class QuestionForm(FlaskForm):
     
-    title = StringField('Title', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
-    media = FileField('Want to attach a file?')
-    uploadQuestion = SubmitField('Upload Question')
+    questionTitle = StringField('Title', validators=[DataRequired()])
+    questionDescription = StringField('Description', validators=[DataRequired()])
+    questionMedia = FileField('Want to attach a file?')
+    questionUpload = SubmitField('Upload Question')
