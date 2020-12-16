@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, flash, redirect
+from flask import Flask, render_template, url_for, request, redirect, flash
 from form import SignUpForm, LoginForm
 import dynamodb_connection as db
 
@@ -8,6 +8,9 @@ import dynamodb_connection as db
 application = Flask(__name__)
 #secret key for authentication
 application.config["SECRET_KEY"] = "69f0386d3078f92207ba280c371bb2ae7c321c2b9192f1626a"
+
+#signedIn = False
+username = None
 
 #can assign multiple routes to same function
 @application.route('/')
@@ -20,18 +23,28 @@ def login():
 @application.route('/signup', methods=["GET", "POST"])
 def signup():
     form = SignUpForm()
-    
-    if form.validate_on_submit():
-        #f string formats the string and allows input data
-        flash(f"Welcome {form.usernameForm.data}", "success")
-        return redirect(url_for("home"))
-    else:
-        flash(f"failed","warning" )
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if(db.checkIfExists(form.emailsu.data)):
+                db.signupDB(form.emailsu.data, form.usernamesu.data, form.passwordsu.data)
+                flash(f"Welcome {form.usernamesu.data}", "success")
+                #signedIn = True
+                username = form.usernamesu.data
+                print(signedIn)
+                return redirect(url_for("home"))
+        #     #
+            #Talk about issues with the page getting stuck in a loop without the if == post
+        # else:
+        #     flash("Email already exists", "warning")
+        #     return redirect(url_for("signup"))
         
     return render_template('signup.html', form=form)
      
 @application.route('/home')
 def home():
+    print(signedIn)
+    if signedIn == False:
+        return redirect(url_for('signup'))
     #get list of questions from dydb to list on homepage
     questions = db.questionList()
     
@@ -45,9 +58,7 @@ def question():
 def questionForm():
     return render_template('question_form.html')
     
-@application.route('/test')
-def testHtml():
-    return render_template('test.html')
+
     
 #wont be able to run on c9 without this
 if __name__ == '__main__':

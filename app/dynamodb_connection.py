@@ -10,8 +10,31 @@ import keys
 #link to dynamodb
 dynamodb = boto3.resource('dynamodb')
 #define variables for tables
-userTable = dynamodb.Table('users')
+userTable = dynamodb.Table('user_information')
 questionTable = dynamodb.Table('questions')
+
+def checkIfExists(email):
+    response = userTable.query(KeyConditionExpression=Key('email').eq(email))
+    if (response['Count'] == 0):
+        #print("empty")
+        return True
+    else:
+        #print(response)
+        return False
+    
+    
+def signupDB(email, username, password):
+    # userInfo = {
+    #     'email': email, 
+    #     'userame': username, 
+    #     'password': password
+    # }
+    userTable.put_item(
+        Item={
+            'email': email,
+            'username': username,
+            'password': password
+        })
 
 #scans db for list of questions and returns list
 def questionList():

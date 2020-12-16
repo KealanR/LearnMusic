@@ -1,62 +1,43 @@
 {% extends 'base.html' %}
 
-{%block head %}
 
-{% endblock head %}
+{% block content %}
 
-{% block body %}
-<!--the below allows flah messages to appear on screen, catagories are true to style with bootstrap-->
-{% with messages = get_flashed_messages(with_categories=true) %}
-<!--If there are messages sent from flash-->
-  {% if messages %}
-    {% for category, message in messages%}
-      <!--category is passed into class - success/fail etc-->
-      <div class="alert alert-{{ category }}">
-        <!--print the message-->
-        {{message}}
-      </div>
-    {% endfor %} 
-  {% endif %}
-{% endwith %}
-<div class="container-fluid mt-5">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-                <h1>Sign up</h1>
-                <form method="POST" action="">
-                  
-                  <!--for the secret key-->
-                  {{ form.hidden_tag() }}
-                  <fieldset class="form-group">
-                    <legend class="mb-5 border-bottom">Sign up here</legend>
-                    <div class="form-group">
-                      {{ form.emailForm.label(class="form-control-label") }}
-                      {{ form.emailForm(class="form-control") }}
-                    </div>
-                    <div class="form-group">
-                      {{ form.usernameForm.label(class="form-control-label") }}
-                      {{ form.usernameForm(class="form-control") }}
-                    </div>
-                    <div class="form-group">
-                      {{ form.passwordForm.label(class="form-control-label") }}
-                      {{ form.passwordForm(class="form-control") }}
-                    </div>
-                    <div class="form-group">
-                      {{ form.passwordCheckForm.label(class="form-control-label") }}
-                      {{ form.passwordCheckForm(class="form-control") }}
-                    </div>
-                  </fieldset>
-                   
-                  <div class="form-group">
-                    {{ form.signupForm(class="btn btn-primary") }}
-                  </div>
-                  <br>
-                  <a  type="button" class="btn btn-link" href="{{ url_for('login')}}">Already have an account?</button>
-                  
-                  
-            </div>
-            <div class="col-2"></div>
-        </div>
-    </div>
 
-{% endblock body%}
+<div class="container">
+  <h3 class="mb-3">Sign up here</h3>
+    <form method="post" action="">
+        
+        {{ form.hidden_tag() }}
+        
+        {{ form.emailsu.label(class="form-control-label") }}
+        {{ form.emailsu(class='form-control') }}
+        {% for error in form.emailsu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.usernamesu.label(class="form-control-label") }}
+        {{ form.usernamesu(class='form-control') }}
+        {% for error in form.usernamesu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.passwordsu.label(class="form-control-label") }}
+        {{ form.passwordsu(class='form-control') }}
+        {% for error in form.passwordsu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.passwordchecksu.label(class="form-control-label") }}
+        {{ form.passwordchecksu(class='form-control') }}
+        {% for error in form.passwordchecksu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.signup(class='btn btn-success') }}
+    </form>
+    <br>
+    <a  type="button" class="btn btn-link" href="{{ url_for('login')}}">Already have an account?</button>
+</div>
+
+{% endblock %}
