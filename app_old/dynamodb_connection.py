@@ -50,10 +50,15 @@ def questionList():
     return response['Items']
    
 #posts question to the database
-def postQuestion(question):
+def postQuestion(title, description, fileLocation):
     
     try:
-        questionTable.put_item(question)
+        questionTable.put_item(
+            Item={
+                'title': title,
+                'description': description,
+                'fileLocation': fileLocation
+            })
         
     except Exception as e:
         pass
