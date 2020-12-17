@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container">
+  <h3 class="mb-3">Sign up here</h3>
+    <form method="post" action="">
+        
+        {{ form.hidden_tag() }}
+        
+        {{ form.emailsu.label(class="form-control-label") }}
+        {{ form.emailsu(class='form-control') }}
+        {% for error in form.emailsu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.usernamesu.label(class="form-control-label") }}
+        {{ form.usernamesu(class='form-control') }}
+        {% for error in form.usernamesu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.passwordsu.label(class="form-control-label") }}
+        {{ form.passwordsu(class='form-control') }}
+        {% for error in form.passwordsu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.passwordchecksu.label(class="form-control-label") }}
+        {{ form.passwordchecksu(class='form-control') }}
+        {% for error in form.passwordchecksu.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.signup(class='btn btn-success') }}
+    </form>
+    <br>
+    <a  type="button" class="btn btn-link" href="{{ url_for('login')}}">Already have an account?</a>
+</div>
+
+{% endblock %}

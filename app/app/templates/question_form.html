@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container">
+  <h3 class="mb-3">Post a question here</h3>
+    <form method="post" action="">
+        
+        {{ form.hidden_tag() }}
+        
+        {{ form.questionTitle.label(class="form-control-label") }}
+        {{ form.questionTitle(class='form-control') }}
+        {% for error in form.questionTitle.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.questionDescription.label(class="form-control-label" ) }}
+        {{ form.questionDescription(class='form-control') }}
+        {% for error in form.questionDescription.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.questionMedia.label(class="form-control-label") }}
+        {{ form.questionMedia(class='form-control') }}
+        {% for error in form.questionMedia.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
+        {{ form.questionUpload(class='btn btn-success') }}
+    </form>
+    <br>
+    <a  type="button" class="btn btn-link" href="{{ url_for('login')}}">Already have an account?</a>
+</div>
+
+{% endblock %}

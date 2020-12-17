@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  
+  <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h3>Hi {{username}} want to ask something?</h3>
+        <a type="button" class="btn btn-link" href="questionform">Post a question here</a>
+      </div>
+      <div class="col-2"></div>
+    </div>
+    
+  <div class="container mt-5">
+  
+  <div class="row">
+    <div class="col-2"></div>
+      <div class="col-8">
+        <h2>Question Feed</h2>
+      </div>
+    <div class="col-2"></div>
+  </div>
+  {% for question in questions %}
+  <br>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8 ">
+        <div class="border">
+          <h3>{{question.title}}</h3>
+          <p>{{question.explanation}}</p>
+          
+          <p class="font-weight-lighter text-info">{{question.tags}}</p>
+          <p><a class="m-1">{{question.username}}</a> {{question.timestamp}}</p>
+          
+        </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  
+  {% endfor %}
+  </div>
+
+{% endblock %}
