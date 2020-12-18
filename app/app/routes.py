@@ -23,7 +23,7 @@ def login():
             # if (user.signedIn):
             if(user != None):
                 
-                message = ("Welcome back ", user.username)
+                message = (f"Welcome back ", user.username)
                 flash(message, "success")
                 # print("THIS IS THE USERNAME ", user.username)
                 # print("THIS IS THE EMAIL     ", user.email)
@@ -98,14 +98,12 @@ def questionForm():
                     filename = images.save(form.questionMedia.data)
                     
                     
-                    s3.upload_to_S3(filename)
-                    # s3.upload_to_S3(f"{file.filename}")
-                    # print(session_user.username)
-                    # db.postQuestionWithFile(session_user['username'], form.questionTitle.data, 
-                    #                  form.questionDescription.data, file.filename)
+                    s3.upload_to_S3(f"{filename}")
+                    print(session_user.username)
+                    db.postQuestionWithFile(session_user['username'], form.questionTitle.data, 
+                                      form.questionDescription.data, filename)
         
-                # except:
-                #     flash(f"Something went wrong", "danger")
+                    return redirect(url_for("question"))
                 
         return render_template('question_form.html', form=form)
     else:
