@@ -1,0 +1,8 @@
+README.md
+setup.py
+dynamo_scan/__init__.py
+dynamo_scan/scan_for_keyword.py
+scan_for_items_dynamodb_pkg.egg-info/PKG-INFO
+scan_for_items_dynamodb_pkg.egg-info/SOURCES.txt
+scan_for_items_dynamodb_pkg.egg-info/dependency_links.txt
+scan_for_items_dynamodb_pkg.egg-info/top_level.txt

@@ -4,9 +4,9 @@
 {% block content %}
 
 
-<div class="container">
+<div class="container  mt-5">
   <h3 class="mb-3">Post a question here</h3>
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         
         {{ form.hidden_tag() }}
         
@@ -28,10 +28,16 @@
         <span class="text-danger">{{ error }}</span>
         {% endfor %}
         <br>
+        {{ form.questionTag.label(class="form-control-label") }}
+        {{ form.questionTag(class='form-control') }}
+        {% for error in form.questionTag.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        <br>
         {{ form.questionUpload(class='btn btn-success') }}
     </form>
-    <br>
-    <a  type="button" class="btn btn-link" href="{{ url_for('login')}}">Already have an account?</a>
+    
+   
 </div>
 
 {% endblock %}
