@@ -1,11 +1,10 @@
 from app import application, bcrypt
 from flask import Flask, render_template, url_for, request, redirect, flash, session
-from app.form import SignUpForm, LoginForm, QuestionForm
+from app.form import SignUpForm, LoginForm, QuestionForm, CommentForm
 import app.dynamodb_connection as db
 import app.s3_connection as s3
 from flask_wtf import FlaskForm
 from flask_uploads import configure_uploads, IMAGES, UploadSet
-#from werkzeug.utils import secure_filename
 
 images = UploadSet('images', IMAGES)
 configure_uploads(application, images)
@@ -71,11 +70,24 @@ def home():
         return redirect(url_for("login"))
   
 
-@application.route('/question')
+@application.route('/question', methods=["GET", "POST"])
 def question():
     if "session_user" in session:
         session_user = session["session_user"]
-        return render_template('question.html')
+        if "session_question" in session:
+            form = CommentForm()
+            question_for_page = session["session_question"]
+            # image = s3.download_from_s3(question_for_page['fileLocation'])
+            question = db.specificQuestion(question_for_page['title'])
+            
+            if request.method == 'POST':
+                if form.validate_on_submit():
+                    db.updateQuestionComments(question_for_page['title'], question_for_page['username'], form.commentTextArea.data, session_user['username'])
+                    return redirect(url_for('question'))
+            return render_template('question.html',form=form, question=question)
+        else:
+            
+            return redirect(url_for('home'))
     else:
         return redirect(url_for("login"))
         
@@ -90,8 +102,10 @@ def questionForm():
                 #try:
                 if not form.questionMedia.data:
                     db.postQuestionWithoutFile(session_user['username'], form.questionTitle.data, 
-                                    form.questionDescription.data)
+                                    form.questionDescription.data, form.questionTag.data)
                     print("UPLOADING NO FILE")
+                    session_question = {"title": form.questionTitle.data, "username": session_user['username']}
+                    session["session_question"] = session_question
                     return redirect(url_for("question"))
                 else:
                     print(form.questionMedia.data)
@@ -99,10 +113,11 @@ def questionForm():
                     
                     
                     s3.upload_to_S3(f"{filename}")
-                    print(session_user.username)
+                    
                     db.postQuestionWithFile(session_user['username'], form.questionTitle.data, 
-                                      form.questionDescription.data, filename)
-        
+                                      form.questionDescription.data, form.questionTag.data, filename)
+                    session_question = {"title": form.questionTitle.data, "username": session_user['username']}
+                    session["session_question"] = session_question
                     return redirect(url_for("question"))
                 
         return render_template('question_form.html', form=form)

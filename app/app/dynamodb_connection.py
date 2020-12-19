@@ -13,10 +13,9 @@ questionTable = dynamodb.Table('questions')
 def checkIfExistsSignUp(email):
     response = userTable.query(KeyConditionExpression=Key('email').eq(email))
     if (response['Count'] == 0):
-        #print("empty")
+        
         return True
     else:
-        #print(response)
         return False
         
 def checkIfExistsLogin(email, password):
@@ -24,15 +23,11 @@ def checkIfExistsLogin(email, password):
     response = userTable.query(KeyConditionExpression=Key('email').eq(email))
     if (response['Count'] == 1):
         item = response['Items'][0]
-        print(item['password'])
         if(bcrypt.check_password_hash(item['password'], password)):
-            # user = User(item['email'], item['username'], True)
             user = User(item['email'], item['username'])
             return user
     
     else:
-        #print(response)
-        # user = User("", "", False)
         user = None
         return user
 
@@ -59,31 +54,32 @@ def questionList():
     
     return response['Items']
     
+def specificQuestion(title):
+    
+    response = questionTable.query(KeyConditionExpression=Key('title').eq(title))
+    if (response['Count'] == 1):
+        item = response['Items'][0]
+        return(item)
+        
+    else:
+        return(None)
+    
+    
 def checkTag():
     
-    print("TESTING TAG!!!!!!!!!!")
     return scan_for_keyword().check_word(questionTable, 'tags', 'hey')
     
-def test(tableName, attrName, keyWord):
-        
-        table = dynamodb.Table(tableName)
-        
-        response = table.scan(FilterExpression=Attr(attrName).contains(keyWord))
-        
-        items = response['Items']
-        print("the following items were found ", items)
-        return items
-        
 
 #posts question to the database
-def postQuestionWithoutFile(username, title, description):
+def postQuestionWithoutFile(username, title, description, tag):
     
     try:
         questionTable.put_item(
             Item={
                 'username': username,
                 'title': title,
-                'description': description
+                'description': description,
+                'tag': tag
             })
         
     except Exception as e:
@@ -92,7 +88,7 @@ def postQuestionWithoutFile(username, title, description):
     
    
 #posts question to the database
-def postQuestionWithFile(username, title, description, fileLocation):
+def postQuestionWithFile(username, title, description, tag, file_location):
     
     try:
         questionTable.put_item(
@@ -100,7 +96,8 @@ def postQuestionWithFile(username, title, description, fileLocation):
                 'username': username,
                 'title': title,
                 'description': description,
-                'fileLocation': fileLocation
+                'tag': tag,
+                'file_location': file_location
             })
         
     except Exception as e:
@@ -108,4 +105,20 @@ def postQuestionWithFile(username, title, description, fileLocation):
         pass
     
 
-    
+def updateQuestionComments(title, username, comment, comment_username):
+    try:
+        questionTable.update_item(
+            Key={
+                'title': title,
+                'username': username
+            },
+            UpdateExpression='SET comments = list_append(if_not_exists(comments, :comment), :comment_username)',
+            ExpressionAttributeValues={
+                ':comment': [{"S":comment}],
+                ':comment_username': [{"S":comment_username}]
+            }
+            )
+            
+    except Exception as e:
+        print(e)
+        pass

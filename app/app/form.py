@@ -43,3 +43,7 @@ class QuestionForm(FlaskForm):
     questionTag = StringField('Please add a tag', validators=[DataRequired()])
     questionUpload = SubmitField('Upload Question')
     
+class CommentForm(FlaskForm):
+    
+    commentTextArea = TextAreaField('Add a comment', render_kw={"rows": 6}, validators=[DataRequired()])
+    commentSubmit = SubmitField('Upload Comment')
