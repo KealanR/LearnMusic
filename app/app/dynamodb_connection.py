@@ -2,7 +2,6 @@ import boto3
 from app import bcrypt
 from app.user import User
 from boto3.dynamodb.conditions import Key, Attr
-from dynamo_scan import scan_for_keyword
                     
 #link to dynamodb
 dynamodb = boto3.resource('dynamodb')

@@ -1,10 +1,11 @@
 from app import application, bcrypt
 from flask import Flask, render_template, url_for, request, redirect, flash, session
-from app.form import SignUpForm, LoginForm, QuestionForm, CommentForm
+from app.form import SignUpForm, LoginForm, QuestionForm, CommentForm, GeneratePasswordForm
 import app.dynamodb_connection as db
 import app.s3_connection as s3
 from flask_wtf import FlaskForm
 from flask_uploads import configure_uploads, IMAGES, UploadSet
+from random_password_pkg import password_generator
 
 images = UploadSet('images', IMAGES)
 configure_uploads(application, images)
@@ -56,6 +57,30 @@ def signup():
             else:
                 flash(f"Something went wrong", "danger")
     return render_template('signup.html', form=form)
+
+@application.route('/pwordgen', methods=["GET", "POST"])    
+def pwordgen():
+    form = GeneratePasswordForm()
+    rn_pw = ""
+    if request.method == 'POST':
+        if form.validate_on_submit():
+        
+            length = form.pwordAmount.data
+            strength = form.pwordStrength.data
+            print(length)
+            print(strength)
+            if strength == 1:
+                rn_pw = password_generator.PasswordGenerator().very_weak_password(length)
+            if strength == 2:
+                rn_pw = password_generator.PasswordGenerator().weak_password(length)
+            if strength == 3:
+                rn_pw = password_generator.PasswordGenerator().mid_password(length)
+            if strength == 4:
+                rn_pw = password_generator.PasswordGenerator().strong_password(length)
+            message = (f"Password is: ", rn_pw)
+            flash(message, "success")
+            return redirect(url_for("pwordgen", rn_pw=rn_pw))
+    return render_template('password.html', form=form, rn_pw=rn_pw)       
 
 @application.route('/home')
 def home():
